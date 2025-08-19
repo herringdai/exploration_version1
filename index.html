@@ -1,0 +1,2419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lark App Directory</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-image: url('bg_dot.png');
+            background-attachment: scroll;
+            background-repeat: no-repeat;
+            background-position: top;
+            background-origin: border-box;
+            background-size: 100% auto;
+            padding-top: 64px; /* To offset for fixed header */
+        }
+
+        #loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            align-items: flex-start;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader { 
+          width: 34px; 
+          aspect-ratio: 1; 
+          --_c:no-repeat radial-gradient(farthest-side,#2f3a55 92%,#0000); 
+          background: 
+            var(--_c) top, 
+            var(--_c) left, 
+            var(--_c) right, 
+            var(--_c) bottom; 
+          background-size: 9px 9px; 
+          animation: l7 1s infinite; 
+        } 
+
+        @keyframes l7 {to{transform: rotate(.5turn)}}
+
+        .loading-text-carousel {
+            margin-top: 72px;
+            height: 40px;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .loading-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(5px);
+            filter: blur(2px);
+            transition: opacity 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+            color: #4b4b4b;
+            font-size: 18px;
+            line-height: 40px;
+            font-weight: 400;
+        }
+
+        .loading-text.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0px);
+        }
+
+        .loading-text.exit {
+            opacity: 0;
+            transform: translateY(-5px);
+            filter: blur(2px);
+            transition: all 0.2s ease;
+        }
+
+
+        #content-wrapper {
+            visibility: hidden;
+        }
+
+        body.loaded #loading-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        body.loaded #content-wrapper {
+            visibility: visible;
+        }
+
+        #center-image-container {
+    position: absolute;
+    top: calc(0% + 135px);
+    left: calc(50% - 340px);
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.5s ease;
+}
+
+        #center-image-container img {
+            width: 52px;
+            height: 52px;
+        }
+
+        #center-image-container-2 {
+            position: absolute;
+            top: calc(0% + 205px);
+            left: calc(50% - 420px);
+            transform: translate(-50%, -50%) scale(0.9);
+            z-index: 999;
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+        }
+
+        #center-image-container-2 img {
+            width: 52px;
+            height: 52px;
+        }
+
+        #center-image-container-3 {
+            position: absolute;
+            top: calc(0% + 265px);
+            left: calc(50% - 340px);
+            transform: translate(-50%, -50%) scale(0.9);
+            z-index: 999;
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+        }
+
+        #center-image-container-3 img {
+            width: 52px;
+            height: 52px;
+        }
+
+        #center-image-container-4 {
+            position: absolute;
+            top: calc(0% + 135px);
+            left: calc(50% + 340px);
+            transform: translate(-50%, -50%) scale(0.9);
+            z-index: 999;
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+        }
+
+        #center-image-container-4 img {
+            width: 52px;
+            height: 52px;
+        }
+
+        #center-image-container-5 {
+            position: absolute;
+            top: calc(0% + 205px);
+            left: calc(50% + 420px);
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+        }
+
+        #center-image-container-5 img {
+            width: 52px;
+            height: 52px;
+        }
+
+        #center-image-container-6 {
+            position: absolute;
+            top: calc(0% + 265px);
+            left: calc(50% + 340px);
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+        }
+
+        #center-image-container-6 img {
+            width: 52px;
+            height: 52px;
+        }
+
+        #center-image-container-7 {
+            position: absolute;
+            top: calc(0% + 220px);
+            left: calc(50% - 390px);
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+        }
+
+        #center-image-container-7 img {
+            width: 143px;
+            height: 55px;
+        }
+
+        #center-image-container-8 {
+            position: absolute;
+            top: calc(0% + 183px);
+            left: calc(50% + 30px);
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+        }
+
+        #center-image-container-8 img {
+            width: 158px;
+            height: 54px;
+        }
+
+        #center-image-container-9 {
+            position: absolute;
+            top: calc(0% + 210px);
+            left: calc(50% + 419px);
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+        }
+
+        #center-image-container-9 img {
+            width: 142px;
+            height: 55px;
+        }
+
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(37px);
+            -webkit-backdrop-filter: blur(37px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.00);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 0.5px solid #E4E7EC;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            color: #1F2329;
+            font-size: 1.2rem;
+        }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+        }
+
+        .header-main-nav {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: #2563eb;
+            
+        }
+
+        .nav a[href="#homepage"] {
+            color: #1456F0;
+            font-weight: 600;
+        }
+
+        .admin-icon {
+            width: 14px;
+            height: 14px;
+        }
+
+        .content-prefs {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .content-prefs:hover {
+            background-color: #f0f0f0;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 14px;
+            color: #1F2329;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e5e7eb;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .action-icon {
+            height: 32px;
+        }
+
+        .page-title-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .page-title-header .main-title {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            margin-top: 110px;
+            line-height: 1.3;
+        }
+        .page-title-header .title-highlight {
+            position: relative;
+            color: #999;
+            cursor: default;
+            transition: color 0.3s ease;
+        }
+        .page-title-header .title-highlight:hover {
+            color: #1C36A6;
+        }
+        #application-text-wrapper {
+            position: relative;
+        }
+
+        .hover-svg {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            pointer-events: none;
+        }
+
+        .top-svg {
+            width: 377px;
+            height: 2px;
+            left: 50%;
+            top: 8px;
+            transform: translateX(calc(-50% - 4px));
+        }
+
+        .bottom-svg {
+            width: 377px;
+            height: 2px;
+            left: 50%;
+            bottom: 0px;
+            transform: translateX(calc(-50% + 4px));
+        }
+
+        .left-svg {
+            width: 2px;
+            height: 106px;
+            left: -2px;
+            top: 56%;
+            transform: translateY(calc(-50% - 4px));
+        }
+
+        .right-svg {
+            width: 2px;
+            height: 106px;
+            right: 0px;
+            top: 56%;
+            transform: translateY(-50%) translateX(-8px);
+        }
+
+        #title-application:hover .top-svg {
+            opacity: 1;
+            transform: translateX(-50%);
+        }
+
+        #title-application:hover .bottom-svg {
+            opacity: 1;
+            transform: translateX(-50%);
+        }
+
+        #title-application:hover .left-svg {
+            opacity: 1;
+            transform: translateY(-50%);
+        }
+
+        #title-application:hover .right-svg {
+            opacity: 1;
+            transform: translateY(-50% - 4px) translateX(-8px);
+        }
+
+        #title-solutions::before,
+        #title-solutions::after {
+            content: '';
+            position: absolute;
+            background-image: url('./application_shu.svg');
+            background-repeat: no-repeat;
+            width: 2px;
+            height: 106px;
+            top: 56%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none;
+        }
+
+        #title-solutions::before {
+            left: -2px;
+        }
+
+        #title-solutions::after {
+            right: 0px;
+        }
+
+        #title-solutions:hover::before,
+        #title-solutions:hover::after {
+            opacity: 1;
+        }
+
+        #solutions-text-wrapper {
+            position: relative;
+        }
+
+        #solutions-text-wrapper::before,
+        #solutions-text-wrapper::after {
+            content: '';
+            position: absolute;
+            background-image: url('./application_heng2.svg');
+            background-repeat: no-repeat;
+            width: 377px;
+            height: 2px;
+            left: calc(50% - 8px);
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none;
+        }
+
+        #solutions-text-wrapper::before {
+            top: 8px;
+        }
+
+        #solutions-text-wrapper::after {
+            bottom: 0px;
+        }
+
+        #title-solutions:hover #solutions-text-wrapper::before,
+        #title-solutions:hover #solutions-text-wrapper::after {
+            opacity: 1;
+        }
+
+        .page-title-header .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+        .page-title-header .search-input {
+            width: 100%;
+            padding: 17px 20px 17px 50px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            background-color: white;
+            outline: none;
+            transition: box-shadow 0.3s ease;
+            box-shadow: inset 0 0 0 1px #E4E7EC, 0px 1px 2px -1px rgba(28, 40, 64, 0.1), 0px 2px 4px rgba(28, 40, 64, 0.04);
+        }
+        .page-title-header .search-input:focus {
+            border: none;
+            box-shadow: inset 0 0 0 1.5px #3370ff, 0px 1px 2px -1px rgba(28, 40, 64, 0.1), 0px 2px 4px rgba(28, 40, 64, 0.04);
+        }
+        .page-title-header .search-input::placeholder {
+            color: #9197a1;
+        }
+        .page-title-header .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            background: url('./icon_search_outlined.svg') no-repeat center center;
+            background-size: contain;
+        }
+
+        .banner-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            margin-top: 72px;
+            margin-bottom: 52px;
+            max-width: 1348px; /* Same as main-content */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .banner {
+            height: 160px;
+            background-color: #F6F8FD;
+            border: 0.5px solid #EAEAEA;
+            border-radius: 12px;
+            flex: 1;
+            padding-left: 38px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .banner:hover {
+            cursor: pointer;
+        }
+
+        .banner-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .banner-image {
+            height: 170px;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+            transition: transform 0.3s ease-in-out;
+            transform-origin: bottom center;
+           
+        }
+
+        .banner:hover .banner-image:not(.no-move) {
+             transform: translateY(-6px);
+        }
+
+        .banner h3 {
+            text-align: left;
+            font-size: 20px;
+            font-weight: 600;
+            color: #5D5D7B;
+            margin-bottom: 5px;
+        }
+
+        .banner p {
+            font-size: 14px;
+            font-weight: 300;
+            color: rgba(93, 100, 117, 0.8);
+        }
+
+        .bubble-left {
+            position: absolute;
+            right: 110px;
+            top: 80px;
+            height: 100px;
+            z-index: 1;
+            transform-origin: bottom center;
+            transform: rotate(-15deg);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .banner:hover .bubble-left {
+            transform: rotate(-20deg);
+        }
+
+        .bubble-right {
+            position: absolute;
+            right: 37px;
+            top: 26px;
+            height: 170px;
+            z-index: 1;
+            transform-origin: bottom center;
+            transform: rotate(0deg);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .banner:hover .bubble-right {
+            transform: rotate(4deg);
+            
+        }
+        .filter-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            max-width: 1348px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .filter-tag {
+            padding: 9px 15px;
+            border-radius: 6px;
+            border: none;
+            background-color: #F5F6F7;
+            color: #65696e;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            outline: none;
+        }
+
+        .filter-tag.active {
+            background-color: #E1EAFF;
+            color: #1456F0;
+            font-weight: 550;
+        }
+
+
+
+        .more-filters {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 9px 15px;
+            border-radius: 6px;
+            border: none;
+            background-color: #F5F6F7;
+            color: #65696e;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .chevron-down {
+            width: 16px;
+            height: 16px;
+            margin-left: 2px;
+        }
+
+        .shubia-xuanfu-image {
+            position: absolute;
+            bottom: -15px;
+            right: -6px;
+            width: 280px;
+            border-bottom-right-radius: 12px;
+            z-index: 2;
+            pointer-events: none;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .clicklark2-image:hover + .shubia-xuanfu-image {
+            transform: translate(-8px, 8px) scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .filter-container {
+                gap: 6px;
+            }
+            
+            .filter-tag,
+            .more-filters {
+                font-size: 12px;
+                padding: 5px 12px;
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1412px;
+            margin: 0 auto;
+            padding: 1.1rem 2rem 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1px;
+        }
+
+        .section-title > span,
+        .section-title > .section-title-icon {
+            cursor: pointer;
+        }
+
+        .section-title-icon {
+            width: 22px;
+            height: 22px;
+            margin-left: 2px;
+            position: relative;
+            top: 2px;
+        }
+
+        /* Application Grid */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 24px;
+        }
+
+        .app-card {
+            background: white;
+            border: 0.5px solid #DEE0E3;
+            border-radius: 12px;
+            box-shadow: 0px 2px 10px 2px rgba(31, 35, 41, 0.01);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .app-card:hover {
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+            transform: translateY(-2px);
+        }
+
+        .bespoke-card {
+            display: flex;
+            align-items: center;
+        }
+
+        .bespoke-card-image {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+        }
+
+        .app-card .get-in-touch-btn {
+            position: absolute;
+            top: 27px;
+            right: 28px;
+            width: 100px; 
+            height: 30px; 
+            border-radius: 6px; 
+            font-size: 14px; 
+            background-color: #202124; 
+            color: white; 
+            border: none; 
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.1s ease;
+            z-index: 2;
+        }
+
+        .app-card:hover .get-in-touch-btn {
+            opacity: 1;
+        }
+
+        .app-card .get-in-touch-btn:hover {
+            background-color: #404145;
+        }
+
+        .app-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 1rem;
+        }
+
+        .app-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #d4d4d4;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            overflow: hidden;
+        }
+
+        .app-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .app-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            line-height: 18px;
+        }
+
+        .app-category {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .category-tag {
+            background-color: #D0DDFC;
+            color: #193f97;
+            padding: 1px 0.4rem;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 550;
+            
+        }
+
+        .category-tag.design {
+            background: linear-gradient(to bottom right, #FDEACC, #F5D7A9);
+            color: #946F38;
+        }
+
+        .app-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .app-meta-container {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .app-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .app-meta-icon {
+            margin-right: 0.25rem;
+            width: 14px;
+            height: 14px;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .stars {
+            color: #fbbf24;
+        }
+
+        .app-meta {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Solution Cards */
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin: 0 0 3rem;
+        }
+
+        .solution-card {
+            border-radius: 16px;
+            padding: 2rem 2rem 0 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            height: 318px;
+        }
+
+        .solution-card-bg {
+            position: absolute;
+            bottom: -6px;
+            right: 14px;
+            width: 588px;
+            height: 190px;
+            z-index: 2;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .solution-card-bg-bottom {
+            position: absolute;
+            bottom: 0px;
+            right: 8px;
+            width: 588px;
+            height: 190px;
+            z-index: 1;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .solution-card-bg-bottom-2 {
+            position: absolute;
+            bottom: 66px;
+            right: -32px;
+            width: 588px;
+            height: 190px;
+            z-index: 1;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .solution-card-bg-bottom-3 {
+            position: absolute;
+            bottom: 47px;
+            right: -30px;
+            width: 588px;
+            height: 190px;
+            z-index: 1;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .solution-card-bg-bottom-4 {
+            position: absolute;
+            bottom: 55px;
+            right: -44px;
+            width: 588px;
+            height: 190px;
+            z-index: 1;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .solution-card.blue:hover .solution-card-bg,
+        .solution-card.green:hover .solution-card-bg,
+        .solution-card.purple:hover .solution-card-bg {
+            bottom: 0px;
+        }
+
+        .solution-card.indigo .solution-card-bg {
+            right: -9px;
+            bottom: -1px;
+        }
+
+        .solution-card.indigo:hover .solution-card-bg {
+            right: -1px;
+        }
+
+        .solution-card > *:not(.solution-card-bg):not(.solution-card-bg-bottom) {
+            position: relative;
+            z-index: 1;
+        }
+
+        .solution-card-overlay {
+            position: absolute;
+            top: 0;
+            left: calc(5%);
+            width: 50%;
+            height: 50%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .solution-card.blue {
+            background: #E9F1F7;
+            color: #333;
+        }
+
+        .solution-card.green {
+            background: #E4F2F2;
+            color: #333;
+        }
+
+        .solution-card.purple {
+            background: #F5F3F1;
+            color: #333;
+        }
+
+        .solution-card.indigo {
+            background: #E7EFF5;
+            color: #333;
+        }
+
+        .solution-card h3 {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 0.4rem;
+        }
+
+        .solution-card-icon {
+            width: 42px;
+            height: 42px;
+            margin-bottom: 0.7rem;
+            border-radius: 12px;
+        }
+
+        .solution-card:hover,
+        .app-card:hover {
+            cursor: pointer;
+        }
+
+        .bespoke-card button:hover {
+            background-color: #404145 !important;
+        }
+
+        .solution-card p {
+            color: #646A73;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .solution-card .tag {
+            font-size: 12px;
+            color: #646A73;
+            background-color: rgba(31, 35, 41, 0.1);
+            padding: 1px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 14px;
+        }
+
+        .solution-visual {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 60px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+        }
+
+        /* Business Future Section */
+        .business-future {
+            background-color: #F9F9FA;
+            padding: 5.8rem 2rem;
+            padding-bottom: 6rem;
+            margin-top: 2rem;
+            margin-bottom: 0px;
+        }
+
+        .business-future h2 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            margin-top: 1.4rem;
+            color: #000000;
+        }
+
+        .business-future p {
+            font-size: 18px;
+            max-width: 1000px;
+            margin-bottom: 2rem;
+            color: #848484;
+        }
+
+        .clicklark2-image {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 276px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .business-future .cta-buttons {
+            justify-content: flex-start;
+        }
+
+        .btn {
+            height: 42px;
+            padding: 0 2rem;
+            border-radius: 8px;
+            font-size: 15px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: #202124;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #42444b;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #202124;
+            border: 1px solid #CAD0D9;
+        }
+
+        .btn-secondary:hover {
+            background: #f7f7f7;
+        }
+
+        .main-content-wrapper {
+            max-width: 1348px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 0;
+        }
+
+        .decorative-line {
+            position: absolute;
+            bottom: 46px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1348px;
+            clip-path: inset(0 100% 0 0);
+            transition: clip-path 1.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .decorative-line.animated {
+            clip-path: inset(0 0 0 0);
+        }
+
+
+
+        /* Growth Engines */
+        .growth-engines {
+            background: #ffffff;
+            padding: 5rem 2rem;
+            padding-top: 6rem;
+            position: relative;
+            padding-bottom: 9rem;
+        }
+
+        .growth-engines h2 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 3rem;
+            text-align: left;
+            padding-top: 20px;
+        }
+
+        .data-powered {
+            color: #ec4899;
+        }
+
+        .growth-text {
+            color: #3b82f6;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #F85673, #EB43C1, #3B41F7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .normal-text {
+            color: #333;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 280px);
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: left;
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .stat-divider {
+            height: 8px;
+            margin-top: -2px;
+        }
+
+        .stat-number {
+            font-size: 29px;
+            font-weight: bold;
+            color: #232529;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: #8F99A8;
+            font-size: 14px;
+            margin-left: 22px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #101113;
+            color: #8F99A8;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-container {
+            display: flex;
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-logo-area {
+            padding-top: -4px; /* Align with text */
+        }
+
+        .footer-logo-area img {
+            height: 32px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2rem;
+            flex-grow: 1;
+        }
+
+        .footer-section h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            margin-top: 5px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #6F7988;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 0.5px solid #292d32;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            text-align: center;
+            color: #505967;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .app-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+        <div class="loader"></div>
+        <div class="loading-text-carousel">
+            <div class="loading-text active">🤟🏼 Just a moment bro!</div>
+            <div class="loading-text">🍿 Lark designer? You’re the best!</div>
+            <div class="loading-text">😊 You look great today!</div>
+        </div>
+    </div>
+    <div id="content-wrapper">
+        <div id="center-image-container">
+            <img src="./left1.svg" alt="Centered Image">
+        </div>
+        <div id="center-image-container-2">
+            <img src="./left2.svg" alt="Centered Image 2">
+        </div>
+        <div id="center-image-container-3">
+            <img src="./left3.svg" alt="Centered Image 3">
+        </div>
+        <div id="center-image-container-4">
+            <img src="./right1.svg" alt="Centered Image 4">
+        </div>
+        <div id="center-image-container-5">
+            <img src="./right2.svg" alt="Centered Image 5">
+        </div>
+        <div id="center-image-container-6">
+            <img src="./right3.svg" alt="Centered Image 6">
+        </div>
+        <div id="center-image-container-7">
+        <img src="./4.svg" alt="Center Image">
+    </div>
+    <div id="center-image-container-8">
+        <img src="./5.svg" alt="Center Image">
+    </div>
+    <div id="center-image-container-9">
+        <img src="./6.svg" alt="Center Image">
+    </div>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-main-nav">
+            <div class="logo">
+                <img src="./lark_logo.svg" alt="Lark Logo" class="logo-icon">
+                Lark App Directory
+            </div>
+            <nav class="nav">
+                <a href="#homepage">Homepage</a>
+                <a href="#applications">Applications</a>
+                <a href="#solutions">Solutions</a>
+                <a href="#templates">Templates</a>
+            </nav>
+        </div>
+        <div class="user-section">
+              <div class="content-prefs">
+                  <img src="./icon_admin_outlined.svg" alt="Admin Icon" class="admin-icon">
+                  <span>Content Preferences</span>
+              </div>
+              
+              <img src="./Frame 1321315214.svg" alt="User Action" class="action-icon">
+          </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="page-title-header"> 
+        <h1 class="main-title"> 
+            Discover <span class="title-highlight" id="title-application">
+                <img src="./application_heng2.svg" class="hover-svg top-svg" alt="Top decorative line">
+                <img src="./application_heng2.svg" class="hover-svg bottom-svg" alt="Bottom decorative line">
+                <img src="./application_shu.svg" class="hover-svg left-svg" alt="Left decorative line">
+                <img src="./application_shu.svg" class="hover-svg right-svg" alt="Right decorative line">
+                <span id="application-text-wrapper">Application</span>
+            </span> or <span class="title-highlight" id="title-solutions"><span id="solutions-text-wrapper">Solutions</span></span><br> 
+            tailored for you 
+        </h1> 
+        
+        <div class="search-container"> 
+            <input type="text" class="search-input" placeholder="Search for digital tools in the consumer industry"> 
+            <span class="search-icon"></span> 
+        </div> 
+        <div class="banner-container">
+            <div class="banner">
+                <div class="banner-text">
+                    <h3>All-in-One HR Software</h3>
+                    <p>Build a High-Performance Organization</p>
+                </div>
+                <img src="./pic.png" alt="Banner Image 1" class="banner-image">
+            </div>
+            <div class="banner">
+                <div class="banner-text">
+                    <h3>All-in-One HR Software</h3>
+                    <p>Build a High-Performance Organization</p>
+                </div>
+                <img src="./人事banner.png" alt="Banner Image 2" class="banner-image no-move">
+                 <img src="./bubbleleft.png" alt="Bubble Left" class="bubble-left">
+                 <img src="./bubbleright.png" alt="Bubble Right" class="bubble-right">
+            </div>
+        </div> 
+    </div>
+    <div class="filter-container">
+        <button class="filter-tag active">Recommend</button>
+        <button class="filter-tag">HR Management</button>
+        <button class="filter-tag">Develop</button>
+        <button class="filter-tag">Design</button>
+        <button class="filter-tag">Data Analysis</button>
+        <button class="filter-tag">Survey Research</button>
+        <button class="filter-tag">HR Management</button>
+        <button class="filter-tag">Recruitment</button>
+        <button class="filter-tag">Develop</button>
+        <button class="filter-tag">Survey Research</button>
+        
+        <button class="more-filters">
+            More Filters
+            <img src="./icon_down-small-ccm_outlined.svg" alt="More Filters" class="chevron-down">
+        </button>
+    </div>
+
+    <main class="main-content">
+        <!-- Applications Section -->
+        <section>
+            <h2 class="section-title">
+            <span>Application</span>
+            <img src="./icon_down-small-ccm_outlined_right.svg" alt="" class="section-title-icon">
+        </h2>
+            <div class="app-grid">
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="NextFlow">
+                        </div>
+                        <div class="app-info">
+                            <h3>NextFlow</h3>
+                            <div class="app-category">
+                                <span class="category-tag">Business</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta-container">
+                         <div class="app-meta">
+                              <img src="./icon_cloud-download_outlined.svg" alt="" class="app-meta-icon">
+                              <span>340K installs</span>
+                          </div>
+                         <div class="app-meta">
+                             <img src="./icon_history_outlined.svg" alt="" class="app-meta-icon">
+                             <span>3 years</span>
+                         </div>
+                         <div class="app-meta">
+                              <img src="./icon_person-admit_outlined.svg" alt="" class="app-meta-icon">
+                             <span>300+ clients</span>
+                         </div>
+                     </div>
+                </div>
+
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./solution2logo.png" alt="Figma">
+                        </div>
+                        <div class="app-info">
+                            <h3>NextFlow</h3>
+                            <div class="app-category">
+                                <span class="category-tag">Business</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta-container">
+                         <div class="app-meta">
+                              <img src="./icon_cloud-download_outlined.svg" alt="" class="app-meta-icon">
+                             <span>377K installs</span>
+                         </div>
+                         <div class="app-meta">
+                              <img src="./icon_history_outlined.svg" alt="" class="app-meta-icon">
+                             <span>3 years</span>
+                         </div>
+                         <div class="app-meta">
+                             <img src="./icon_person-admit_outlined.svg" alt="" class="app-meta-icon">
+                             <span>350+ clients</span>
+                         </div>
+                     </div>
+                </div>
+
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./solution3logo.png" alt="Sketch">
+                        </div>
+                        <div class="app-info">
+                            <h3>NextFlow</h3>
+                            <div class="app-category">
+                                <span class="category-tag">Business</span>
+                                <span class="category-tag design">Featured</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta-container">
+                         <div class="app-meta">
+                             <img src="./icon_cloud-download_outlined.svg" alt="" class="app-meta-icon">
+                             <span>340K installs</span>
+                         </div>
+                         <div class="app-meta">
+                             <img src="./icon_history_outlined.svg" alt="" class="app-meta-icon">
+                             <span>3 years</span>
+                         </div>
+                         <div class="app-meta">
+                             <img src="./icon_person-admit_outlined.svg" alt="" class="app-meta-icon">
+                             <span>300+ clients</span>
+                         </div>
+                     </div>
+                </div>
+
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./DAOJISHI.png" alt="NextFlow">
+                        </div>
+                        <div class="app-info">
+                            <h3>NextFlow</h3>
+                            <div class="app-category">
+                                <span class="category-tag">Business</span>
+                                <span class="category-tag design">Featured</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta-container">
+                        <div class="app-meta">
+                            <img src="./icon_cloud-download_outlined.svg" alt="" class="app-meta-icon">
+                            <span>340K installs</span>
+                        </div>
+                        <div class="app-meta">
+                             <img src="./icon_history_outlined.svg" alt="" class="app-meta-icon">
+                            <span>3 years</span>
+                        </div>
+                        <div class="app-meta">
+                             <img src="./iicon_person-admit_outlined.svg" alt="" class="app-meta-icon">
+                            <span>300+ clients</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Miro">
+                        </div>
+                        <div class="app-info">
+                            <h3>NextFlow</h3>
+                            <div class="app-category">
+                                <span class="category-tag">Business</span>
+                                <span class="category-tag design">Featured</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta-container">
+                        <div class="app-meta">
+                            <img src="./icon_cloud-download_outlined.svg" alt="" class="app-meta-icon">
+                            <span>340K installs</span>
+                        </div>
+                        <div class="app-meta">
+                             <img src="./icon_history_outlined.svg" alt="" class="app-meta-icon">
+                            <span>3 years</span>
+                        </div>
+                        <div class="app-meta">
+                             <img src="./icon_person-admit_outlined.svg" alt="" class="app-meta-icon">
+                            <span>300+ clients</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./solution2logo.png" alt="GitHub">
+                        </div>
+                        <div class="app-info">
+                            <h3>GitHub</h3>
+                            <div class="app-category">
+                                <span class="category-tag">Workflow</span>
+                                <span class="category-tag design">Featured</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta-container">
+                        <div class="app-meta">
+                            <img src="./icon_cloud-download_outlined.svg" alt="" class="app-meta-icon">
+                            <span>340K installs</span>
+                        </div>
+                        <div class="app-meta">
+                             <img src="./icon_history_outlined.svg" alt="" class="app-meta-icon">
+                            <span>3 years</span>
+                        </div>
+                        <div class="app-meta">
+                             <img src="./icon_person-admit_outlined.svg" alt="" class="app-meta-icon">
+                            <span>300+ clients</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./solution2logo.png" alt="Jira">
+                        </div>
+                        <div class="app-info">
+                            <h3>Jira</h3>
+                            <div class="app-category">
+                                <span class="category-tag">Business</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="app-description">A proprietary issue tracking product developed by Atlassian </p>
+                    <div class="app-meta-container">
+                         <div class="app-meta">
+                              <img src="./icon_cloud-download_outlined.svg" alt="" class="app-meta-icon">
+                              <span>3k installs</span>
+                          </div>
+                         <div class="app-meta">
+                             <img src="./icon_history_outlined.svg" alt="" class="app-meta-icon">
+                             <span>5 years</span>
+                         </div>
+                         <div class="app-meta">
+                              <img src="./icon_person-admit_outlined.svg" alt="" class="app-meta-icon">
+                             <span>1000+ clients</span>
+                         </div>
+                     </div>
+                </div>
+
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Notion">
+                        </div>
+                        <div class="app-info">
+                            <h3>Notion</h3>
+                            <div class="app-category">
+                                <span class="category-tag">Business</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="app-description">The all-in-one workspace for your notes, tasks, wikis, and databases.</p>
+                    <div class="app-meta-container">
+                         <div class="app-meta">
+                              <img src="./icon_cloud-download_outlined.svg" alt="" class="app-meta-icon">
+                              <span>7k installs</span>
+                          </div>
+                         <div class="app-meta">
+                             <img src="./icon_history_outlined.svg" alt="" class="app-meta-icon">
+                             <span>4 years</span>
+                         </div>
+                         <div class="app-meta">
+                              <img src="./icon_person-admit_outlined.svg" alt="" class="app-meta-icon">
+                             <span>2000+ clients</span>
+                         </div>
+                     </div>
+                </div>
+
+                <div class="app-card bespoke-card" style="position: relative; background-color: #ffffff;">
+                    <div style="padding-right: 120px; padding-left: 16px; padding-top: 10px;">
+                        <div class="app-header" style="margin-bottom: 2px;">
+                           
+                            <div class="app-info">
+                                <h3>Bespoke Services</h3>
+                               
+                            </div>
+                        </div>
+                        <p class="app-description">Deliver modular solutions tailored to your enterprise needs.</p>
+                        <button style="width: 110px; height: 30px; border-radius: 6px; font-size: 14px; background-color: #202124; color: white; border: none; cursor: pointer;">Contact Us</button>
+                        
+                    </div>
+                    <img src="./Bespoke Services.svg" alt="" class="bespoke-card-image">
+                </div>
+
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Slack">
+                        </div>
+                        <div class="app-info">
+                            <h3>Slack</h3>
+                            <div class="app-category">
+                                <span class="category-tag">Communication</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="app-description">A new way to communicate with your team. It's faster, better organized, and more secure than email.</p>
+                    <div class="app-meta-container">
+                         <div class="app-meta">
+                              <img src="./icon_cloud-download_outlined.svg" alt="" class="app-meta-icon">
+                              <span>20k installs</span>
+                          </div>
+                         <div class="app-meta">
+                             <img src="./icon_history_outlined.svg" alt="" class="app-meta-icon">
+                             <span>8 years</span>
+                         </div>
+                         <div class="app-meta">
+                              <img src="./icon_person-admit_outlined.svg" alt="" class="app-meta-icon">
+                             <span>10000+ clients</span>
+                         </div>
+                     </div>
+                </div>
+
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Trello">
+                        </div>
+                        <div class="app-info">
+                            <h3>Trello</h3>
+                            <div class="app-category">
+                                <span class="category-tag">Business</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="app-description">A collaboration tool that organizes your projects into boards. In one glance, Trello tells you what's being...</p>
+                    <div class="app-meta-container">
+                         <div class="app-meta">
+                              <img src="./icon_cloud-download_outlined.svg" alt="" class="app-meta-icon">
+                              <span>15k installs</span>
+                          </div>
+                         <div class="app-meta">
+                             <img src="./icon_history_outlined.svg" alt="" class="app-meta-icon">
+                             <span>7 years</span>
+                         </div>
+                         <div class="app-meta">
+                              <img src="./icon_person-admit_outlined.svg" alt="" class="app-meta-icon">
+                             <span>8000+ clients</span>
+                         </div>
+                     </div>
+                </div>
+
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Asana">
+                        </div>
+                        <div class="app-info">
+                            <h3>Asana</h3>
+                            <div class="app-category">
+                                <span class="category-tag">Business</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="app-description">A work management platform that helps teams orchestrate their work, from small projects to strategic initiatives.</p>
+                    <div class="app-meta-container">
+                         <div class="app-meta">
+                              <img src="./icon_cloud-download_outlined.svg" alt="" class="app-meta-icon">
+                              <span>8k installs</span>
+                          </div>
+                         <div class="app-meta">
+                             <img src="./icon_history_outlined.svg" alt="" class="app-meta-icon">
+                             <span>9 years</span>
+                         </div>
+                         <div class="app-meta">
+                              <img src="./icon_person-admit_outlined.svg" alt="" class="app-meta-icon">
+                             <span>6000+ clients</span>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solutions Section -->
+        <section>
+            <h2 class="section-title">
+            <span>Solution</span>
+            <img src="./icon_down-small-ccm_outlined_right.svg" alt="" class="section-title-icon">
+        </h2>
+            <div class="solution-grid">
+                <div class="solution-card blue">
+                    <div class="solution-card-content">
+                        <img src="./head_solution1.png" alt="" class="solution-card-icon">
+                        <h3>MapTable Visual Solution</h3>
+                        <p>Strategic performance management solution integrating OKRs, project management and visualization in one comprehensive platform.</p>
+                        <div class="tag">Sales Manage</div>
+                    </div>
+                    <img src="./solution1bgbg-1.png" alt="" class="solution-card-bg-bottom">
+                    <img src="./solution1bg-1.png" alt="" class="solution-card-bg">
+
+                </div>
+                <div class="solution-card green">
+                    <div class="solution-card-content">
+                        <img src="./solution2logo.png" alt="" class="solution-card-icon">
+                        <h3>OKR Sales Performance Suite</h3>
+                        <p>Strategic execution platform unifying OKR tracking, prospect analytics and team performance for your business growth.</p>
+                        <div class="tag">OKR Manage</div>
+                    </div>
+                    <img src="./solution2bgbg-1.png" alt="" class="solution-card-bg-bottom-2">
+                    <img src="./solution2bg-1.png" alt="" class="solution-card-bg">
+
+                </div>
+                <div class="solution-card purple">
+                    <div class="solution-card-content">
+                        <img src="./solution3logo.png" alt="" class="solution-card-icon">
+                        <h3>OKR Sales Performance Suite</h3>
+                        <p>Strategic execution platform unifying OKR tracking, prospect analytics and team performance for your business growth.</p>
+                        <div class="tag">Sales Manage</div>
+                    </div>
+                    <img src="./solution3bgbg-1.png" alt="" class="solution-card-bg-bottom-3">
+                    <img src="./solution3bg-1.png" alt="" class="solution-card-bg">
+
+                </div>
+                <div class="solution-card indigo">
+                    <img src="./solution4logo.png" alt="" class="solution-card-icon">
+                    <h3>SRM Procurement Solution</h3>
+                    <p>Comprehensive supplier relationship management solution streamlining procurement processes and vendor management.</p>
+                    <div class="tag">Sales Manage</div>
+                    <img src="./solution4bg-1.png" alt="" class="solution-card-bg">
+                    <img src="./solution4bgbg-1.png" alt="" class="solution-card-bg-bottom-4">
+
+                   
+                </div>
+            </div>
+        </section>
+
+        <!-- More Applications -->
+        <section>
+            <h2 class="section-title">
+            <span>Templates</span>
+            <img src="./icon_down-small-ccm_outlined_right.svg" alt="" class="section-title-icon">
+        </h2>
+            <div class="app-grid">
+               
+
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Vercel">
+                        </div>
+                        <div class="app-info">
+                            <h3>Vercel</h3>
+                            <div class="app-category"><span class="category-tag">Workflow</span></div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta">
+                        <img src="./[D] AvatarGroup.svg" alt="" class="app-meta-icon" style="width: 52px; height: 20px;">
+                        <span>1,500+ Users</span>
+                        
+                    </div>
+                </div>
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 iconX.png" alt="Vercel">
+                        </div>
+                        <div class="app-info">
+                            <h3>Vercel</h3>
+                            <div class="app-category"><span class="category-tag">Workflow</span></div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta">
+                        <img src="./[D] AvatarGroup.svg" alt="" class="app-meta-icon" style="width: 52px; height: 20px;">
+                        <span>1,500+ Users</span>
+                        
+                    </div>
+                </div>
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Vercel">
+                        </div>
+                        <div class="app-info">
+                            <h3>Vercel</h3>
+                            <div class="app-category"><span class="category-tag">Workflow</span></div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta">
+                        <img src="./[D] AvatarGroup.svg" alt="" class="app-meta-icon" style="width: 52px; height: 20px;">
+                        <span>1,500+ Users</span>
+                        
+                    </div>
+                </div>
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Vercel">
+                        </div>
+                        <div class="app-info">
+                            <h3>Vercel</h3>
+                            <div class="app-category"><span class="category-tag">Business</span></div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta">
+                        <img src="./[D] AvatarGroup.svg" alt="" class="app-meta-icon" style="width: 52px; height: 20px;">
+                        <span>1,500+ Users</span>
+                        
+                    </div>
+                </div>
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./solution3logo.png" alt="Vercel">
+                        </div>
+                        <div class="app-info">
+                            <h3>Vercel</h3>
+                            <div class="app-category"><span class="category-tag">Business</span></div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta">
+                        <img src="./[D] AvatarGroup.svg" alt="" class="app-meta-icon" style="width: 52px; height: 20px;">
+                        <span>1,500+ Users</span>
+                        
+                    </div>
+                </div>
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./DAOJISHI.png" alt="Vercel">
+                        </div>
+                        <div class="app-info">
+                            <h3>Vercel</h3>
+                            <div class="app-category"><span class="category-tag">Business</span></div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta">
+                        <img src="./[D] AvatarGroup.svg" alt="" class="app-meta-icon" style="width: 52px; height: 20px;">
+                        <span>1,500+ Users</span>
+                        
+                    </div>
+                </div>
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Vercel">
+                        </div>
+                        <div class="app-info">
+                            <h3>Vercel</h3>
+                            <div class="app-category"><span class="category-tag">Business</span></div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta">
+                        <img src="./[D] AvatarGroup.svg" alt="" class="app-meta-icon" style="width: 52px; height: 20px;">
+                        <span>1,500+ Users</span>
+                        
+                    </div>
+                </div>
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Vercel">
+                        </div>
+                        <div class="app-info">
+                            <h3>Vercel</h3>
+                            <div class="app-category"><span class="category-tag">Business</span></div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta">
+                        <img src="./[D] AvatarGroup.svg" alt="" class="app-meta-icon" style="width: 52px; height: 20px;">
+                        <span>1,500+ Users</span>
+                        
+                    </div>
+                </div>
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Vercel">
+                        </div>
+                        <div class="app-info">
+                            <h3>Vercel</h3>
+                            <div class="app-category"><span class="category-tag">Business</span></div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta">
+                        <img src="./[D] AvatarGroup.svg" alt="" class="app-meta-icon" style="width: 52px; height: 20px;">
+                        <span>1,500+ Users</span>
+                        
+                    </div>
+                </div>
+
+               
+
+               
+
+              
+             
+            </div>
+            <div class="app-grid">
+               
+
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Vercel">
+                        </div>
+                        <div class="app-info">
+                            <h3>Vercel</h3>
+                            <div class="app-category"><span class="category-tag">Business</span></div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta">
+                        <img src="./[D] AvatarGroup.svg" alt="" class="app-meta-icon" style="width: 52px; height: 20px;">
+                        <span>1,500+ Users</span>
+                        
+                    </div>
+                </div>
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Vercel">
+                        </div>
+                        <div class="app-info">
+                            <h3>Vercel</h3>
+                            <div class="app-category"><span class="category-tag">Business</span></div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta">
+                        <img src="./[D] AvatarGroup.svg" alt="" class="app-meta-icon" style="width: 52px; height: 20px;">
+                        <span>1,500+ Users</span>
+                        
+                    </div>
+                </div>
+                <div class="app-card">
+                    <button class="get-in-touch-btn">Get in touch</button>
+                    <div class="app-header">
+                        <div class="app-logo">
+                            <img src="./应用 icon1.png" alt="Vercel">
+                        </div>
+                        <div class="app-info">
+                            <h3>Vercel</h3>
+                            <div class="app-category"><span class="category-tag">Business</span></div>
+                        </div>
+                    </div>
+                    <p class="app-description">Digital Sales Management System - End-to-end workflow process from leads to cash</p>
+                    <div class="app-meta">
+                        <img src="./[D] AvatarGroup.svg" alt="" class="app-meta-icon" style="width: 52px; height: 20px;">
+                        <span>1,500+ Users</span>
+                        
+                    </div>
+                </div>
+
+               
+
+               
+
+              
+             
+            </div>
+        </section>
+    </main>
+
+    <!-- Business Future Section -->
+    <section class="business-future">
+        <div class="main-content-wrapper">
+            <img src="./clicklark2.png" alt="Clicklark App" class="clicklark2-image">
+                <img src="./shubia_xuanfu.png" alt="Shubia Xuanfu" class="shubia-xuanfu-image">
+            <h2><span style="font-style: normal;"></span> Building Your Business Future</h2>
+            <p>Where Every Business Vision Finds Its Perfectly Engineered Path</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn btn-primary">Contact Us</a>
+                <a href="#plans" class="btn btn-secondary">Our Plans</a>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Growth Engines Section -->
+    <section class="growth-engines">
+                    <img src="./line_new.svg" class="decorative-line" alt="decorative line">
+        <div class="main-content-wrapper">
+                        <h2>Building <span class="normal-text">Data-Powered Growth</span> <span class="normal-text">Engines</span></h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-header">
+                        <img src="./Vertical Divider grey.svg" alt="divider" class="stat-divider">
+                        <div class="stat-number" data-target="3,000+">0</div>
+                    </div>
+                    <div class="stat-label">Active Applications</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-header">
+                        <img src="./Vertical Divider grey.svg" alt="divider" class="stat-divider">
+                        <div class="stat-number" data-target="150+">0</div>
+                    </div>
+                    <div class="stat-label">Enterprise Clients</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-header">
+                        <img src="./Vertical Divider grey.svg" alt="divider" class="stat-divider">
+                        <div class="stat-number" data-target="90%">0</div>
+                    </div>
+                    <div class="stat-label">Customer Satisfaction</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-header">
+                        <img src="./Vertical Divider grey.svg" alt="divider" class="stat-divider">
+                        <div class="stat-number" data-target="2,500+">0</div>
+                    </div>
+                    <div class="stat-label">Successful Deployments</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo-area">
+                <img src="./footer_logo.svg" alt="Footer Logo">
+            </div>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About Lark</h4>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#careers">Careers</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Products</h4>
+                    <ul>
+                        <li><a href="#applications">Applications</a></li>
+                        <li><a href="#solutions">Solutions</a></li>
+                        <li><a href="#templates">Templates</a></li>
+                        <li><a href="#api">API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#help">Help Center</a></li>
+                        <li><a href="#documentation">Documentation</a></li>
+                        <li><a href="#community">Community</a></li>
+                        <li><a href="#status">Status</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#security">Security</a></li>
+                        <li><a href="#compliance">Compliance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#guides">Guides</a></li>
+                        <li><a href="#tutorials">Tutorials</a></li>
+                        <li><a href="#webinars">Webinars</a></li>
+                        <li><a href="#case-studies">Case Studies</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Lark App Directory. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Add interactive functionality
+        const filterTags = document.querySelectorAll('.filter-tag');
+        const recommendTag = Array.from(filterTags).find(tag => tag.textContent.trim() === 'Recommend');
+
+        filterTags.forEach(tag => {
+            tag.addEventListener('click', function() {
+                if (this === recommendTag) {
+                    if (!this.classList.contains('active')) {
+                        filterTags.forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                    }
+                } else {
+                    if (recommendTag) {
+                        recommendTag.classList.remove('active');
+                    }
+                    this.classList.toggle('active');
+
+                    const activeTags = document.querySelectorAll('.filter-tag.active');
+                    if (activeTags.length === 0 && recommendTag) {
+                        recommendTag.classList.add('active');
+                    }
+                }
+            });
+        });
+
+        // More filters dropdown functionality
+        document.querySelector('.more-filters').addEventListener('click', function() {
+            console.log('More filters clicked');
+        });
+
+        // Animation for growth engines section
+        const growthEnginesSection = document.querySelector('.growth-engines');
+        const decorativeLine = document.querySelector('.decorative-line');
+        const statNumbers = document.querySelectorAll('.stat-number');
+
+        const animateCountUp = (el) => {
+            const targetText = el.dataset.target;
+            const target = parseInt(targetText.replace(/[,+%]/g, ''));
+            let count = 0;
+            const duration = 800; // 0.8s
+            const startTime = performance.now();
+
+            const easeOutCubic = (t) => (--t) * t * t + 1;
+
+            const step = (currentTime) => {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(elapsedTime / duration, 1);
+                const easedProgress = easeOutCubic(progress);
+                count = Math.floor(easedProgress * target);
+                el.textContent = count.toLocaleString() + (targetText.includes('+') ? '+' : '') + (targetText.includes('%') ? '%' : '');
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    el.textContent = targetText; // Ensure final value is accurate
+                }
+            };
+
+            requestAnimationFrame(step);
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        decorativeLine.classList.add('animated');
+                        statNumbers.forEach(statNumber => {
+                            animateCountUp(statNumber);
+                        });
+                    }, 700);
+                    observer.unobserve(growthEnginesSection);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        observer.observe(growthEnginesSection);
+    </script>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            history.scrollRestoration = 'manual';
+            window.scrollTo(0, 0);
+            const loadPromise = new Promise(resolve => {
+                window.addEventListener('load', resolve);
+            });
+
+            const timeoutPromise = new Promise(resolve => {
+                setTimeout(resolve, 4000);
+            });
+
+            Promise.all([loadPromise, timeoutPromise]).then(() => {
+                document.body.classList.add('loaded');
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const solutionsText = document.querySelector('.solutions-text');
+
+            if (solutionsText) {
+                solutionsText.addEventListener('animationend', (event) => {
+                    if (event.animationName === 'fade-out') {
+                        setTimeout(() => {
+                            const body = document.body;
+                            body.classList.remove('loaded');
+                            void body.offsetWidth; // Trigger a reflow
+                            body.classList.add('loaded');
+                        }, 100);
+                    }
+                });
+            }
+        });
+     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const textElements = document.querySelectorAll('.loading-text');
+            let currentIndex = 0;
+
+            setInterval(() => {
+                const currentElement = textElements[currentIndex];
+                currentElement.classList.add('exit');
+
+                setTimeout(() => {
+                    currentElement.classList.remove('active');
+                    currentElement.classList.remove('exit');
+
+                    currentIndex = (currentIndex + 1) % textElements.length;
+
+                    const nextElement = textElements[currentIndex];
+                    nextElement.classList.add('active');
+                }, 200); // Corresponds to the transition duration
+            }, 1600);
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const applicationTextWrapper = document.getElementById('application-text-wrapper');
+            const imageContainer1 = document.getElementById('center-image-container');
+            const imageContainer2 = document.getElementById('center-image-container-2');
+            const imageContainer3 = document.getElementById('center-image-container-3');
+            const imageContainer4 = document.getElementById('center-image-container-4');
+            const imageContainer5 = document.getElementById('center-image-container-5');
+            const imageContainer6 = document.getElementById('center-image-container-6');
+            const imageContainer7 = document.getElementById('center-image-container-7');
+            const imageContainer8 = document.getElementById('center-image-container-8');
+            const imageContainer9 = document.getElementById('center-image-container-9');
+
+            const titleSolutions = document.getElementById('title-solutions');
+
+            applicationTextWrapper.addEventListener('mouseover', () => {
+                setTimeout(() => {
+                    imageContainer1.style.transform = 'translate(calc(-50% - 30px), calc(-50% - 11px)) rotate(16deg)';
+                    imageContainer1.style.opacity = '1';
+                }, 0);
+                setTimeout(() => {
+                    imageContainer2.style.transform = 'translate(calc(-50% - 30px), calc(-50% + 6px)) rotate(-16deg)';
+                    imageContainer2.style.opacity = '1';
+                }, 10);
+                setTimeout(() => {
+                    imageContainer3.style.transform = 'translate(calc(-50% - 30px), calc(-50% + 30px)) rotate(-44deg)';
+                    imageContainer3.style.opacity = '1';
+                }, 20);
+                setTimeout(() => {
+                    imageContainer4.style.transform = 'translate(calc(-50% + 16px), calc(-50% - 11px)) rotate(30deg)';
+                    imageContainer4.style.opacity = '1';
+                }, 30);
+                setTimeout(() => {
+                    imageContainer5.style.transform = 'translate(calc(-50% + 31px), calc(-50% + 6px)) rotate(-16deg)';
+                    imageContainer5.style.opacity = '1';
+                }, 40);
+                setTimeout(() => {
+                    imageContainer6.style.transform = 'translate(calc(-50% + 18px), calc(-50% + 30px)) rotate(44deg)';
+                    imageContainer6.style.opacity = '1';
+                }, 50);
+            });
+
+            applicationTextWrapper.addEventListener('mouseout', () => {
+                imageContainer1.style.transform = 'translate(-50%, -50%)';
+                imageContainer1.style.opacity = '0';
+                imageContainer2.style.transform = 'translate(-50%, -50%)';
+                imageContainer2.style.opacity = '0';
+                imageContainer3.style.transform = 'translate(-50%, -50%)';
+                imageContainer3.style.opacity = '0';
+                imageContainer4.style.transform = 'translate(-50%, -50%)';
+                imageContainer4.style.opacity = '0';
+                imageContainer5.style.transform = 'translate(-50%, -50%)';
+                imageContainer5.style.opacity = '0';
+                imageContainer6.style.transform = 'translate(-50%, -50%)';
+                imageContainer6.style.opacity = '0';
+            });
+
+            titleSolutions.addEventListener('mouseover', () => {
+                setTimeout(() => {
+                    imageContainer7.style.transform = 'translate(calc(-50% - 39px), calc(-50% - 51px)) rotate(-26deg)';
+                    imageContainer7.style.opacity = '1';
+                }, 0);
+                setTimeout(() => {
+                    imageContainer8.style.transform = 'translate(calc(-50% - 30px), calc(-50% - 56px)) rotate(-5deg)';
+                    imageContainer8.style.opacity = '1';
+                }, 10);
+                setTimeout(() => {
+                    imageContainer9.style.transform = 'translate(calc(-50% + 59px), calc(-50% - 25px)) rotate(26deg)';
+                    imageContainer9.style.opacity = '1';
+                }, 20);
+            });
+
+            titleSolutions.addEventListener('mouseout', () => {
+                imageContainer7.style.opacity = '0';
+                imageContainer8.style.opacity = '0';
+                imageContainer9.style.opacity = '0';
+                imageContainer7.style.transform = 'translate(-50%, -50%)';
+                imageContainer8.style.transform = 'translate(-50%, -50%)';
+                imageContainer9.style.transform = 'translate(-50%, -50%)';
+            });
+        });
+    </script>
+  </body>
+</html>

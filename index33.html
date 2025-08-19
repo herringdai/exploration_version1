@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Navigation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f7;
+            padding: 60px 20px;
+        }
+
+        .filter-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filter-tag {
+            padding: 6px 14px;
+            border-radius: 16px;
+            border: none;
+            background-color: #e8e8ed;
+            color: #86868b;
+            font-size: 13px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            outline: none;
+        }
+
+        .filter-tag:hover {
+            background-color: #d2d2d7;
+            color: #1d1d1f;
+        }
+
+        .filter-tag.active {
+            background-color: #007aff;
+            color: #ffffff;
+        }
+
+        .filter-tag.active:hover {
+            background-color: #0056cc;
+        }
+
+        .more-filters {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 14px;
+            border-radius: 16px;
+            border: none;
+            background-color: #e8e8ed;
+            color: #86868b;
+            font-size: 13px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .more-filters:hover {
+            background-color: #d2d2d7;
+            color: #1d1d1f;
+        }
+
+        .chevron-down {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            margin-left: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .filter-container {
+                gap: 6px;
+            }
+            
+            .filter-tag,
+            .more-filters {
+                font-size: 12px;
+                padding: 5px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="filter-container">
+        <button class="filter-tag active">Recommend</button>
+        <button class="filter-tag">HR Management</button>
+        <button class="filter-tag">Develop</button>
+        <button class="filter-tag">Design</button>
+        <button class="filter-tag">Data Analysis</button>
+        <button class="filter-tag">Survey Research</button>
+        <button class="filter-tag">HR Management</button>
+        <button class="filter-tag">Recruitment</button>
+        <button class="filter-tag">Develop</button>
+        <button class="filter-tag">Survey Research</button>
+        
+        <button class="more-filters">
+            More Filters
+            <svg class="chevron-down" viewBox="0 0 24 24">
+                <polyline points="6,9 12,15 18,9"></polyline>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        // Add interactive functionality
+        document.querySelectorAll('.filter-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                // Remove active class from all tags
+                document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tag
+                this.classList.add('active');
+            });
+        });
+
+        // More filters dropdown functionality
+        document.querySelector('.more-filters').addEventListener('click', function() {
+            console.log('More filters clicked');
+        });
+    </script>
+</body>
+</html>

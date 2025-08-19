@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .main-title {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .title-highlight {
+            color: #999;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 50px 16px 20px;
+            border: 2px solid #e5e5e5;
+            border-radius: 12px;
+            font-size: 16px;
+            background-color: white;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #007bff;
+        }
+
+        .search-input::placeholder {
+            color: #999;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 20px;
+        }
+
+        .content-section {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 60px;
+            align-items: start;
+            margin-bottom: 40px;
+        }
+
+        .service-card {
+            text-align: center;
+        }
+
+        .service-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .service-subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .social-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-2px);
+        }
+
+        .twitter {
+            background-color: #000;
+            color: white;
+        }
+
+        .teams {
+            background-color: #464775;
+            color: white;
+        }
+
+        .linkedin {
+            background-color: #0077b5;
+            color: white;
+        }
+
+        .drive {
+            background-color: #4285f4;
+            color: white;
+        }
+
+        .messenger {
+            background-color: #0084ff;
+            color: white;
+        }
+
+        .gmail {
+            background-color: #ea4335;
+            color: white;
+        }
+
+        .preview-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -100px;
+        }
+
+        .preview-mockup {
+            width: 300px;
+            height: 200px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 20px;
+            border: 1px solid #e5e5e5;
+        }
+
+        .mockup-header {
+            height: 8px;
+            background-color: #4ade80;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+
+        .mockup-content {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mockup-line {
+            height: 4px;
+            background-color: #e5e5e5;
+            border-radius: 2px;
+        }
+
+        .mockup-line.short {
+            width: 60%;
+        }
+
+        .mockup-line.medium {
+            width: 80%;
+        }
+
+        .mockup-line.long {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 32px;
+            }
+
+            .content-section {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .preview-section {
+                justify-content: center;
+                margin-top: 40px;
+            }
+
+            .social-icons {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">
+                Discover <span class="title-highlight">Application or Solutions</span><br>
+                tailored for you
+            </h1>
+            
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    placeholder="Search for digital tools in the consumer industry"
+                >
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="service-card">
+                <h2 class="service-title">All-in-One HR Software</h2>
+                <p class="service-subtitle">Build a High-Performance Organization</p>
+            </div>
+
+            <div class="social-icons">
+                <div class="social-row">
+                    <div class="social-icon twitter">𝕏</div>
+                    <div class="social-icon teams">⊞</div>
+                    <div class="social-icon linkedin">in</div>
+                </div>
+                <div class="social-row">
+                    <div class="social-icon drive">📁</div>
+                    <div class="social-icon messenger">💬</div>
+                    <div class="social-icon gmail">✉</div>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <h2 class="service-title">Customer-Focused Messaging</h2>
+                <p class="service-subtitle">Build a High-Performance Organization</p>
+            </div>
+        </div>
+
+        <div class="preview-section">
+            <div class="preview-mockup">
+                <div class="mockup-header"></div>
+                <div class="mockup-content">
+                    <div class="mockup-line long"></div>
+                    <div class="mockup-line medium"></div>
+                    <div class="mockup-line short"></div>
+                    <div class="mockup-line long"></div>
+                    <div class="mockup-line medium"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
